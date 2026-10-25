@@ -106,5 +106,23 @@ def top_n_by_rating(movies, n=3):
     sorted_movies = sorted(movies, key=lambda movie: movie["rating"], reverse=True)
     return [(movie["title"], movie["rating"]) for movie in sorted_movies[:n]]
 
+def count_by_genre(movies):
+    genres_cnt = {}
+    for movie in movies:
+        for genre in movie["genres"]:
+            genres_cnt[genre] = genres_cnt.get(genre, 0) + 1
+    return genres_cnt
+
+def actor_filmography(movies):
+    actor_films = {}
+    for movie in movies:
+        for actor in movie["actors"]:
+            actor_films[actor] = actor_films.get(actor, []) + [movie["title"]]
+    return actor_films
+
+def high_rating_movies(movies):
+    return {movie["title"]: movie["rating"] for movie in movies \
+            if movie["rating"] > average_rating(movies)}
+
 if __name__ == "__main__":
     main()
