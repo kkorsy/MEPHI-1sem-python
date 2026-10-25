@@ -27,6 +27,7 @@ movies = [
 
 def main():
     print_not_comedies(movies)
+    print_high_rated_movies(movies)
 
 def average_rating(movies):
     return round(sum(movie["rating"] for movie in movies) / len(movies), 1)
@@ -94,8 +95,8 @@ def make_slug(title: str):
     return title.lower().replace(" ", "-")
 
 def format_report_line(movie):
-    return f'"{movie["title"]}" ({movie["year"]}) — {movie["rating"]}/10, ' \
-        f'{duration_in_hours(movie["duration_min"])}, ' \
+    return f'"{normalize_title(movie["title"])}" ({movie["year"]}) — ' \
+        f'{movie["rating"]}/10, {duration_in_hours(movie["duration_min"])}, ' \
         f'жанры: {', '.join(sorted(list(movie["genres"])))}'
 
 def titles_sorted_by_rating(movies: list):
@@ -141,6 +142,17 @@ def genres_only_in_one(movies_a, movies_b):
     for movie in movies_b:
         genres_b.update(movie["genres"])
     return genres_a - genres_b
+
+def iter_high_rated(movies, min_rating=8.0):
+    for movie in filter(lambda movie: movie["rating"] >= min_rating, movies):
+        yield movie
+
+def print_high_rated_movies(movies):
+    for movie in iter_high_rated(movies):
+        print(format_report_line(movie))
+
+def sum_movies_duration(movies):
+    return sum(movie["duration_min"] for movie in movies if movie["rating"] > 7)
 
 if __name__ == "__main__":
     main()
