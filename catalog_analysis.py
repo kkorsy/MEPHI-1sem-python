@@ -1,3 +1,5 @@
+import math
+
 movies = [
     {"title": "The Dune Chronicles", "year": 2021, "genres": {"sci-fi", "drama"},
      "rating": 8.6, "duration_min": 155, 
@@ -25,6 +27,27 @@ movies = [
 
 def main():
     pass
+
+def average_rating(movies):
+    avg_rate = 0
+    for movie in movies:
+        avg_rate += movie["rating"]
+    return round(avg_rate / len(movies), 1)
+
+def catalog_age_stats(movies, current_year=2026):
+    oldest_movie, newest_movie = current_year, 0
+    avg_year = 0
+    for movie in movies:
+        movie_year = current_year - movie["year"]
+        oldest_movie = min(oldest_movie, movie_year)
+        newest_movie = max(newest_movie, movie_year)
+        avg_year += movie_year
+    avg_year /= len(movies)
+
+    return (oldest_movie, newest_movie, math.ceil(avg_year))
+
+def duration_in_hours(minutes):
+    return f"{minutes // 60}ч {minutes % 60}м"
 
 
 if __name__ == "__main__":
