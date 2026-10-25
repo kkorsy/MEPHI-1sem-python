@@ -27,7 +27,6 @@ movies = [
 
 def main():
     print_not_comedies(movies)
-    print(catalog_age_stats(movies))
 
 def average_rating(movies):
     return round(sum(movie["rating"] for movie in movies) / len(movies), 1)
@@ -83,6 +82,21 @@ def count_long_movies(movies, threshold=120):
         if movie["duration_min"] > threshold:
             cnt += 1
     return cnt
+
+def normalize_title(title):
+    capitalized_title = ""
+    words = title.split()
+    for word in words:
+        capitalized_title += word[0].upper() + word[1:] + " "
+    return capitalized_title.strip()
+
+def make_slug(title: str):
+    return title.lower().replace(" ", "-")
+
+def format_report_line(movie):
+    return f'"{movie["title"]}" ({movie["year"]}) — {movie["rating"]}/10, ' \
+        f'{duration_in_hours(movie["duration_min"])}, ' \
+        f'жанры: {', '.join(sorted(list(movie["genres"])))}'
 
 if __name__ == "__main__":
     main()
