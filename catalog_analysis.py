@@ -27,23 +27,15 @@ movies = [
 
 def main():
     print_not_comedies(movies)
+    print(catalog_age_stats(movies))
 
 def average_rating(movies):
-    avg_rate = 0
-    for movie in movies:
-        avg_rate += movie["rating"]
-    return round(avg_rate / len(movies), 1)
+    return round(sum(movie["rating"] for movie in movies) / len(movies), 1)
 
 def catalog_age_stats(movies, current_year=2026):
-    oldest_movie, newest_movie = current_year, 0
-    avg_year = 0
-    for movie in movies:
-        movie_year = current_year - movie["year"]
-        oldest_movie = min(oldest_movie, movie_year)
-        newest_movie = max(newest_movie, movie_year)
-        avg_year += movie_year
-    avg_year /= len(movies)
-
+    oldest_movie = max(current_year - movie["year"] for movie in movies)
+    newest_movie = min(current_year - movie["year"] for movie in movies)
+    avg_year = sum(current_year - movie["year"] for movie in movies) / len(movies)
     return (oldest_movie, newest_movie, math.ceil(avg_year))
 
 def duration_in_hours(minutes):
