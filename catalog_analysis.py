@@ -26,7 +26,7 @@ movies = [
 
 
 def main():
-    pass
+    print_not_comedies(movies)
 
 def average_rating(movies):
     avg_rate = 0
@@ -67,6 +67,30 @@ def decade_label(year):
             return "недавние"
         case _:
             return "старые"
+
+def print_not_comedies(movies):
+    for movie in movies:
+        if "comedy" in movie["genres"]:
+            continue
+        print(movie["title"])
+
+def find_first_masterpiece(movies):
+    i = 0
+    while i < len(movies):
+        if rating_tier(movies[i]["rating"]) == "шедевр":
+            break
+        i += 1
+    else:
+        print("Шедевров не найдено")
+        return
+    return movies[i]
+
+def count_long_movies(movies, threshold=120):
+    cnt = 0
+    for movie in movies:
+        if movie["duration_min"] > threshold:
+            cnt += 1
+    return cnt
 
 if __name__ == "__main__":
     main()
